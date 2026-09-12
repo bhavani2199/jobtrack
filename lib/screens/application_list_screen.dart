@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jobtrack/models/job_application.dart';
+import 'package:jobtrack/screens/application_detail_screen.dart';
 
 class ApplicationListScreen extends StatelessWidget {
   const ApplicationListScreen({super.key});
@@ -35,32 +36,43 @@ class ApplicationListScreen extends StatelessWidget {
           final app = applications[index];
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        app.role,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ApplicationDetailScreen(application: app),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          app.role,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(
-                        app.company,
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                  Chip(
-                    label: Text(app.status),
-                    backgroundColor: Colors.blue.shade50,
-                  ),
-                ],
+                        Text(
+                          app.company,
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    Chip(
+                      label: Text(app.status),
+                      backgroundColor: Colors.blue.shade50,
+                    ),
+                  ],
+                ),
               ),
             ),
           );
