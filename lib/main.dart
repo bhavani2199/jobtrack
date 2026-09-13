@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jobtrack/screens/application_list_screen.dart';
+import 'package:jobtrack/providers/applications_provider.dart';
 
 void main() {
-  runApp(const JobTrackApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ApplicationsProvider(),
+      child: const JobTrackApp(),
+    ),
+  );
 }
 
 class JobTrackApp extends StatelessWidget {

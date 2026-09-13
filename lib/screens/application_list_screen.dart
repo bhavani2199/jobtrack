@@ -1,32 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jobtrack/models/job_application.dart';
+import 'package:provider/provider.dart';
 import 'package:jobtrack/screens/application_detail_screen.dart';
+import 'package:jobtrack/providers/applications_provider.dart';
 
 class ApplicationListScreen extends StatelessWidget {
   const ApplicationListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<JobApplication> applications = [
-      JobApplication(
-        company: 'Google',
-        role: 'Flutter Developer',
-        status: 'Applied',
-        dateApplied: DateTime(2026, 9, 1),
-      ),
-      JobApplication(
-        company: 'Shopee',
-        role: 'Mobile Engineer',
-        status: 'Interviewing',
-        dateApplied: DateTime(2026, 9, 5),
-      ),
-      JobApplication(
-        company: 'Grab',
-        role: 'Software Engineer',
-        status: 'Offer',
-        dateApplied: DateTime(2026, 9, 8),
-      ),
-    ];
+    final applications = context.watch<ApplicationsProvider>().applications;
 
     return Scaffold(
       appBar: AppBar(title: const Text('JobTrack')),
