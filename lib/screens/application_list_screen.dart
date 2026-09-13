@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobtrack/screens/application_detail_screen.dart';
 import 'package:jobtrack/providers/applications_provider.dart';
+import 'package:jobtrack/screens/add_application_screen.dart';
 
 class ApplicationListScreen extends StatelessWidget {
   const ApplicationListScreen({super.key});
@@ -59,6 +60,17 @@ class ApplicationListScreen extends StatelessWidget {
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddApplicationScreen(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
