@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:jobtrack/screens/application_detail_screen.dart';
 import 'package:jobtrack/providers/applications_provider.dart';
 import 'package:jobtrack/screens/add_application_screen.dart';
+import 'package:jobtrack/screens/job_search_screen.dart';
 
 class ApplicationListScreen extends StatelessWidget {
   const ApplicationListScreen({super.key});
@@ -12,7 +13,22 @@ class ApplicationListScreen extends StatelessWidget {
     final applications = context.watch<ApplicationsProvider>().applications;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('JobTrack')),
+      appBar: AppBar(
+        title: const Text('JobTrack'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const JobSearchScreen(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: ListView.builder(
         itemCount: applications.length,
         itemBuilder: (context, index) {
@@ -34,21 +50,23 @@ class ApplicationListScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          app.role,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            app.role,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          app.company,
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                      ],
+                          Text(
+                            app.company,
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
                     ),
                     Chip(
                       label: Text(app.status),

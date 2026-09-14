@@ -4,7 +4,14 @@ import 'package:jobtrack/providers/applications_provider.dart';
 import 'package:jobtrack/models/job_application.dart';
 
 class AddApplicationScreen extends StatefulWidget {
-  const AddApplicationScreen({super.key});
+  final String? initialCompany;
+  final String? initialRole;
+
+  const AddApplicationScreen({
+    super.key,
+    this.initialCompany,
+    this.initialRole,
+  });
 
   @override
   State<AddApplicationScreen> createState() => _AddApplicationScreenState();
@@ -12,16 +19,16 @@ class AddApplicationScreen extends StatefulWidget {
 
 class _AddApplicationScreenState extends State<AddApplicationScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _companyController = TextEditingController();
-  final _roleController = TextEditingController();
+  late final _companyController = TextEditingController();
+  late final _roleController = TextEditingController();
   String _status = 'Applied';
-  DateTime _dateApplied = DateTime.now();
+  final DateTime _dateApplied = DateTime.now();
 
   @override
-  void dispose() {
-    _companyController.dispose();
-    _roleController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _companyController.text = widget.initialCompany ?? '';
+    _roleController.text = widget.initialRole ?? '';
   }
 
   void _submit() {
