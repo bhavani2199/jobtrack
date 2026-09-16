@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jobtrack/models/job_application.dart';
-import 'package:jobtrack/services/storage_service.dart';
+import 'package:jobtrack/services/supabase_service.dart';
 
 class ApplicationsProvider extends ChangeNotifier {
-  final StorageService _storageService = StorageService();
+  final SupabaseService _service = SupabaseService();
   List<JobApplication> _applications = [];
 
   List<JobApplication> get applications => _applications;
@@ -13,19 +13,17 @@ class ApplicationsProvider extends ChangeNotifier {
   }
 
   Future<void> _loadApplications() async {
-    _applications = await _storageService.loadApplictaions();
+    _applications = await _service.loadApplications();
     notifyListeners();
   }
 
-  void addApplication(JobApplication app) {
-    _applications.add(app);
-    notifyListeners();
-    _storageService.saveApplications(_applications);
+  Future<void> addApplication(JobApplication app) async {
+    await _service.addApplication(app);
+    await _loadApplications();
   }
 
-  void updateStatus(int index, String newStatus) {
-    _applications[index].status = newStatus;
-    notifyListeners();
-    _storageService.saveApplications(_applications);
+  Future<void> updateStatus(String id, String newStatus) async {
+    await _service.updateStatus(id, newStatus);
+    await _loadApplications();
   }
 }
