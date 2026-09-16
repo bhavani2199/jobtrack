@@ -31,7 +31,7 @@ class _AddApplicationScreenState extends State<AddApplicationScreen> {
     _roleController.text = widget.initialRole ?? '';
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       final newApp = JobApplication(
         company: _companyController.text,
@@ -40,7 +40,7 @@ class _AddApplicationScreenState extends State<AddApplicationScreen> {
         dateApplied: _dateApplied,
       );
       context.read<ApplicationsProvider>().addApplication(newApp);
-      Navigator.pop(context);
+      if (mounted) Navigator.pop(context);
     }
   }
 
