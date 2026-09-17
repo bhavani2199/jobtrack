@@ -16,6 +16,7 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
   final _service = SupabaseService();
   final _roundNameController = TextEditingController();
   List<InterviewRound> _rounds = [];
+  DateTime _selectedRoundDate = DateTime.now();
 
   @override
   void initState() {
@@ -40,6 +41,18 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
     await _service.addRound(round);
     _roundNameController.clear();
     await _loadRounds();
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedRoundDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    );
+    if (picked != null) {
+      setState(() => _selectedRoundDate = picked);
+    }
   }
 
   @override
@@ -69,10 +82,36 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
               (r) => ListTile(
                 title: Text(r.roundName),
                 subtitle: Text(r.outcome ?? 'Pending'),
+                onTap: () async {
+                  final outcome = await showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                      title: const Text('Mark Outcome'),
+                      children: ['Passed', 'Failed', 'Pending']
+                          .map(
+                            (o) => SimpleDialogOption(
+                              onPressed: () => Navigator.pop(context, o),
+                              child: Text(o),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  );
+                  if (outcome != null) {
+                    await _service.updateRoundOutcome(r.id!, outcome);
+                    await _loadRounds();
+                  }
+                },
               ),
             ),
             Row(
               children: [
+                TextButton(
+                  onPressed: _pickDate,
+                  child: Text(
+                    _selectedRoundDate.toLocal().toString().split(' ')[0],
+                  ),
+                ),
                 Expanded(
                   child: TextField(
                     controller: _roundNameController,

@@ -48,4 +48,11 @@ class SupabaseService {
   Future<void> addRound(InterviewRound round) async {
     await _client.from('interview_rounds').insert(round.toJson());
   }
+
+  Future<void> updateRoundOutcome(String id, String outcome) async {
+    await _client
+        .from('interview_rounds')
+        .update({'outcome': outcome})
+        .eq('id', id);
+  }
 }
