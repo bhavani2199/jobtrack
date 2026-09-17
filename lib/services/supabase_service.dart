@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:jobtrack/models/job_application.dart';
+import 'package:jobtrack/models/interview_round.dart';
 
 class SupabaseService {
   final _client = Supabase.instance.client;
@@ -22,6 +23,17 @@ class SupabaseService {
     return rows.map((row) => JobApplication.fromJson(row)).toList();
   }
 
+  Future<List<InterviewRound>> loadRoundsForApplication(
+    String applicationId,
+  ) async {
+    final rows = await _client
+        .from('interview_rounds')
+        .select()
+        .eq('application_id', applicationId)
+        .order('round_date');
+    return rows.map((row) => InterviewRound.fromJson(row)).toList();
+  }
+
   Future<void> addApplication(JobApplication app) async {
     await _client.from('applications').insert(app.toJson());
   }
@@ -31,5 +43,9 @@ class SupabaseService {
         .from('applications')
         .update({'status': newStatus})
         .eq('id', id);
+  }
+
+  Future<void> addRound(InterviewRound round) async {
+    await _client.from('interview_rounds').insert(round.toJson());
   }
 }
