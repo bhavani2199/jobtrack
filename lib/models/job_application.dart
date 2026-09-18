@@ -1,12 +1,12 @@
+import 'package:jobtrack/models/interview_round.dart';
+
 class JobApplication {
-  // id is the primary key (Topic 1). Supabase generates it — we never set it
-  // ourselves when creating a new application, only when we already have one
-  // loaded back from the database.
   final String? id;
   String company;
   String role;
   String status;
   DateTime dateApplied;
+  final List<InterviewRound>? rounds;
 
   JobApplication({
     this.id,
@@ -14,10 +14,9 @@ class JobApplication {
     required this.role,
     required this.status,
     required this.dateApplied,
+    this.rounds,
   });
 
-  // Matches the actual Supabase column names (Topic 3: types & constraints —
-  // this is the shape the database enforces).
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
@@ -35,6 +34,11 @@ class JobApplication {
       role: json['role_title'],
       status: json['status'],
       dateApplied: DateTime.parse(json['applied_date']),
+      rounds: json['interview_rounds'] != null
+          ? (json['interview_rounds'] as List)
+                .map((r) => InterviewRound.fromJson(r))
+                .toList()
+          : null,
     );
   }
 }

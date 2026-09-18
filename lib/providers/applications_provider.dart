@@ -13,7 +13,7 @@ class ApplicationsProvider extends ChangeNotifier {
   }
 
   Future<void> _loadApplications() async {
-    _applications = await _service.loadApplications();
+    _applications = await _service.loadApplicationsWithRounds();
     notifyListeners();
   }
 

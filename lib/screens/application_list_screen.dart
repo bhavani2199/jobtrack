@@ -72,6 +72,11 @@ class ApplicationListScreen extends StatelessWidget {
                       label: Text(app.status),
                       backgroundColor: Colors.blue.shade50,
                     ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${app.rounds?.length ?? 0} rounds',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
                   ],
                 ),
               ),

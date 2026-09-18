@@ -34,6 +34,14 @@ class SupabaseService {
     return rows.map((row) => InterviewRound.fromJson(row)).toList();
   }
 
+  Future<List<JobApplication>> loadApplicationsWithRounds() async {
+    final rows = await _client
+        .from('applications')
+        .select('*, interview_rounds(*)')
+        .order('applied_date', ascending: false);
+    return rows.map((row) => JobApplication.fromJson(row)).toList();
+  }
+
   Future<void> addApplication(JobApplication app) async {
     await _client.from('applications').insert(app.toJson());
   }
