@@ -42,6 +42,13 @@ class SupabaseService {
     return rows.map((row) => JobApplication.fromJson(row)).toList();
   }
 
+  Future<Map<String, int>> loadStatusCounts() async {
+    final rows = await _client.rpc('get_application_status_counts');
+    return {
+      for (final row in rows) row['status'] as String: row['count'] as int,
+    };
+  }
+
   Future<void> addApplication(JobApplication app) async {
     await _client.from('applications').insert(app.toJson());
   }

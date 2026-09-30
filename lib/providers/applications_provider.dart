@@ -26,4 +26,8 @@ class ApplicationsProvider extends ChangeNotifier {
     await _service.updateStatus(id, newStatus);
     await _loadApplications();
   }
+
+  Future<void> refresh() async {
+    await _loadApplications();
+  }
 }

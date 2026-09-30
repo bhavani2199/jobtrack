@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jobtrack/models/job_application.dart';
 import 'package:jobtrack/models/interview_round.dart';
+import 'package:jobtrack/providers/applications_provider.dart';
 import 'package:jobtrack/services/supabase_service.dart';
+import 'package:provider/provider.dart';
 
 class ApplicationDetailScreen extends StatefulWidget {
   final JobApplication application;
@@ -41,6 +43,7 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
     await _service.addRound(round);
     _roundNameController.clear();
     await _loadRounds();
+    if (mounted) context.read<ApplicationsProvider>().refresh();
   }
 
   Future<void> _pickDate() async {
